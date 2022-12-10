@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/cart/bloc/cart_bloc.dart';
-import 'package:new_user_shop_app/home/bloc/home_bloc.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
 
 class ProductDetailCard extends StatefulWidget {
@@ -88,7 +87,7 @@ class _ProductDetailCardState extends State<ProductDetailCard> {
             replacement: FloatingActionButton.extended(
               onPressed: () {
                 final bloc = context.read<CartBloc>();
-                final event = RemoveFromCart(products: product);
+                final event = RemoveFromCart(product: product);
                 bloc.add(event);
               },
               label: const Text('Remove'),
@@ -97,7 +96,7 @@ class _ProductDetailCardState extends State<ProductDetailCard> {
             child: FloatingActionButton.extended(
               onPressed: () {
                 final bloc = context.read<CartBloc>();
-                final event = AddToCart(products: product);
+                final event = AddToCart(product: product);
                 bloc.add(event);
               },
               label: const Text('Add To Cart'),

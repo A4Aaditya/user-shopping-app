@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => CartBloc()),
-        BlocProvider(create: (context) => OrderBloc())
+        BlocProvider(create: (context) => OrderBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
@@ -33,10 +34,10 @@ class ProductCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.grey,
               ),
-              child: Image.network(
-                product.imageUrl,
+              child: CachedNetworkImage(
+                imageUrl: product.imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
+                errorWidget: (context, error, stackTrace) {
                   return const Center(
                     child: Text('No Image'),
                   );

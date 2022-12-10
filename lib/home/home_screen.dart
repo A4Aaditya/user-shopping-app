@@ -1,7 +1,9 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/authentication/bloc/auth_bloc.dart';
 import 'package:new_user_shop_app/authentication/views/login_screen.dart';
+import 'package:new_user_shop_app/cart/bloc/cart_bloc.dart';
 import 'package:new_user_shop_app/home/bloc/home_bloc.dart';
 import 'package:new_user_shop_app/cart/cart_screen.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
@@ -31,9 +33,23 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Home Screen'),
         actions: [
-          IconButton(
-            onPressed: navigateToCartScreen,
-            icon: const Icon(Icons.shopping_bag),
+          BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              final len = state.products.length;
+              return IconButton(
+                onPressed: navigateToCartScreen,
+                icon: Badge(
+                  showBadge: len != 0,
+                  badgeContent: Text(
+                    '$len',
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  child: const Icon(Icons.shopping_bag),
+                ),
+              );
+            },
           ),
           IconButton(
             onPressed: logoutPressed,

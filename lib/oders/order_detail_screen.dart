@@ -15,20 +15,73 @@ class OrderDetailScreen extends StatefulWidget {
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final order = widget.order;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Detail'),
       ),
       body: ListView(
+        padding: const EdgeInsets.all(10),
         children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(
+              'Shipping Detail',
+              style: TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(
+              'Order Items',
+              style: TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
           ...widget.order.products.map(
             (e) {
               return ProductCard(
                 product: e,
+                height: 100,
+                width: 120,
                 navigateToDetail: () => navigateToProductDetailScreen(e),
               );
             },
           ).toList(),
+          const SizedBox(height: 40),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(
+              'Billing Detail',
+              style: TextStyle(
+                fontSize: 22.0,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          const Text('Total Payable'),
+          const Text('Delivery Charges'),
+          const Text('Platform Fee'),
+          const Text('SubTotal'),
+          const SizedBox(height: 40),
+          Visibility(
+            visible: order.orderStatus != 'CANCELLED',
+            child: ElevatedButton(
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll<Color>(Colors.red),
+              ),
+              onPressed: () => {},
+              child: const Padding(
+                padding: EdgeInsets.all(18.0),
+                child: Text('Canel Order'),
+              ),
+            ),
+          ),
         ],
       ),
     );

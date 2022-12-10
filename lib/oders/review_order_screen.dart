@@ -26,6 +26,8 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   @override
   void initState() {
     super.initState();
+    final bloc = context.read<OrderBloc>();
+    bloc.add(InitiatePayment());
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, placeOrder);
   }
 
@@ -33,7 +35,9 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   Widget build(BuildContext context) {
     final products = widget.products;
     final amount = products.fold(
-        0.0, (previousValue, element) => previousValue + element.offerPrice);
+      0.0,
+      (previousValue, element) => previousValue + element.offerPrice,
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text('Review Order'),
@@ -148,7 +152,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
 
   void makePayment(double amount) {
     final bloc = context.read<OrderBloc>();
-    bloc.add(InitiatePayment());
+    bloc.add(OpenPaymentPage());
     var options = {
       'key': 'rzp_test_cAIoc3NUAOQT6k',
       'amount': (amount * 100).toInt(),
@@ -163,10 +167,15 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   }
 
   void placeOrder(PaymentSuccessResponse response) async {
+    final amount = widget.products.fold(
+      0.0,
+      (previousValue, element) => previousValue + element.offerPrice,
+    );
     final payment = {
       'orderId': response.orderId,
       'paymentId': response.paymentId,
       'signature': response.signature,
+      'amount': (amount * 100).toInt(),
     };
     final bloc = context.read<OrderBloc>();
     final data = {

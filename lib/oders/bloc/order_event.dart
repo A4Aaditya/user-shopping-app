@@ -9,4 +9,6 @@ class OrderAddEvent extends OrderEvent {
 
 class InitiatePayment extends OrderEvent {}
 
+class OpenPaymentPage extends OrderEvent {}
+
 class OrderFetchEvent extends OrderEvent {}

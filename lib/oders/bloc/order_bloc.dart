@@ -9,7 +9,8 @@ part 'order_state.dart';
 
 class OrderBloc extends Bloc<OrderEvent, OrderState> {
   OrderBloc() : super(OrderInitial()) {
-    on<InitiatePayment>(_initatePayemnt);
+    on<InitiatePayment>(_initatePayment);
+    on<OpenPaymentPage>(_openPaymentPage);
     on<OrderAddEvent>(_addOrder);
     on<OrderFetchEvent>(_fetchOrder);
   }
@@ -44,10 +45,17 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     }
   }
 
-  FutureOr<void> _initatePayemnt(
-    InitiatePayment event,
+  FutureOr<void> _openPaymentPage(
+    OpenPaymentPage event,
     Emitter<OrderState> emit,
   ) {
     emit(PaymentProcessingState());
+  }
+
+  FutureOr<void> _initatePayment(
+    InitiatePayment event,
+    Emitter<OrderState> emit,
+  ) {
+    emit(OrderInitial());
   }
 }

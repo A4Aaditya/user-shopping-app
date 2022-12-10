@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
 import 'package:new_user_shop_app/oders/bloc/order_bloc.dart';
 import 'package:new_user_shop_app/oders/order_detail_screen.dart';
@@ -21,6 +22,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final inrCurrency = NumberFormat.simpleCurrency(locale: 'en_in');
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Orders'),
@@ -36,7 +39,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 itemBuilder: (context, index) {
                   final order = orders[index];
                   return Card(
-                    elevation: 2.0,
+                    elevation: 3.0,
                     margin: const EdgeInsets.all(8.0),
                     child: InkWell(
                       onTap: () {
@@ -48,20 +51,36 @@ class _OrderScreenState extends State<OrderScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(14.0),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
                               child: Text('${index + 1}'),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: Column(
+                              child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('ID ${order.id}'),
-                                  Text(
-                                      'Total Product ${order.products.length}'),
-                                  Text('Status ${order.orderStatus}'),
-                                  Text('Payment ${order.paymentType}'),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Products: ${order.products.length} Items',
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          'Payable: ${inrCurrency.format(order.payment.amount)}',
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Chip(
+                                    label: Text(
+                                      order.orderStatus,
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
@@ -84,7 +103,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void navigateToProductDetail(ProductModel product) {
     final route = MaterialPageRoute(
-        builder: (context) => ProductDetailCard(product: product));
+      builder: (context) => ProductDetailCard(product: product),
+    );
     Navigator.push(context, route);
   }
 

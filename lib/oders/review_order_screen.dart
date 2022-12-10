@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/dashboard/dashboard_screen.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
 import 'package:new_user_shop_app/oders/bloc/order_bloc.dart';
+import 'package:new_user_shop_app/profile/address/address_model.dart';
+import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/widget/product_card.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
@@ -22,6 +24,7 @@ class ReviewOrderScreen extends StatefulWidget {
 class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   final _razorpay = Razorpay();
   bool isPaymentProcessing = false;
+  AddressModel? address;
 
   @override
   void initState() {
@@ -48,12 +51,35 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    return ProductCard(product: product);
-                  },
+                child: ListView(
+                  children: [
+                    BlocBuilder<AddressBloc, AddressState>(
+                      builder: (context, state) {
+                        if (state is AddressSuccessState) {
+                          final data = state.data;
+                          return DropdownButton(
+                            value: address,
+                            items: data.map((e) {
+                              return DropdownMenuItem(
+                                value: e,
+                                child: Text(e.shortReadable()),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                address = value;
+                              });
+                            },
+                          );
+                        } else {
+                          return const Text('No Address Found');
+                        }
+                      },
+                    ),
+                    ...products.map((product) {
+                      return ProductCard(product: product);
+                    }).toList(),
+                  ],
                 ),
               ),
               BlocConsumer<OrderBloc, OrderState>(
@@ -151,6 +177,10 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   }
 
   void makePayment(double amount) {
+    if (address == null) {
+      showSnackBar(message: 'Please select a Address', color: Colors.red);
+      return;
+    }
     final bloc = context.read<OrderBloc>();
     bloc.add(OpenPaymentPage());
     var options = {
@@ -209,6 +239,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
     final createdBy = FirebaseAuth.instance.currentUser?.uid;
     return {
       'created_by': createdBy,
+      'address': address?.toMap(),
       'items': item,
       'order_status': 'CREATED',
       'payment_type': 'COD',

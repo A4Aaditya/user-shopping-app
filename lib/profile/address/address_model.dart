@@ -40,6 +40,29 @@ class AddressModel {
       userId: map[AddressModelKey.userId],
     );
   }
+
+  String shortReadable() {
+    return '$name - $house';
+  }
+
+  String fullReadable() {
+    return '$name - $house\n$area $landMark\n$state -  $pincode';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'phone_number': phoneNumber,
+      'area': area,
+      AddressModelKey.pincode: pincode,
+      'house': house,
+      'town': town,
+      'land_mark': landMark,
+      AddressModelKey.name: name,
+      'user_id': userId,
+      'state': state,
+    };
+  }
 }
 
 class AddressModelKey {

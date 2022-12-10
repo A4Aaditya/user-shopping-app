@@ -1,4 +1,9 @@
 part of 'address_bloc.dart';
 
-@immutable
 abstract class AddressEvent {}
+
+class InitialAddressEvent extends AddressEvent {}
+
+class AddressFetchEvent extends AddressEvent {}
+
+class AddressRefreshEvent extends AddressEvent {}

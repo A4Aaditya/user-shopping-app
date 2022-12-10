@@ -10,19 +10,27 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
+    on<HomeInitialEvent>(_initalEvent);
     on<HomeFetchProductEvent>(_fetchProduct);
   }
 
   FutureOr<void> _fetchProduct(
-      HomeFetchProductEvent event, Emitter<HomeState> emit) async {
+    HomeFetchProductEvent event,
+    Emitter<HomeState> emit,
+  ) async {
     emit(HomeLoading());
     try {
       final products = await HomeRepository().fetchProduct();
-      if (products.isNotEmpty) {
-        emit(HomeFetchProducSuccesstState(products: products));
-      }
+      emit(HomeFetchProducSuccesstState(products: products));
     } catch (e) {
       emit(HomeFetchProductErrorState(message: e.toString()));
     }
+  }
+
+  FutureOr<void> _initalEvent(
+    HomeInitialEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(HomeInitial());
   }
 }

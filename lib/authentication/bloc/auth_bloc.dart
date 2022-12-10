@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'package:new_user_shop_app/authentication/repository/auth_repository.dart';
 
 part 'auth_event.dart';

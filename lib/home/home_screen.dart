@@ -7,6 +7,7 @@ import 'package:new_user_shop_app/cart/bloc/cart_bloc.dart';
 import 'package:new_user_shop_app/home/bloc/home_bloc.dart';
 import 'package:new_user_shop_app/cart/cart_screen.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
+import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/widget/product_card.dart';
 import 'package:new_user_shop_app/widget/product_detail_card.dart';
 
@@ -22,9 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final bloc = context.read<HomeBloc>();
-    final event = HomeFetchProductEvent();
-    bloc.add(event);
+    // Load Homepage
+    final homeBloc = context.read<HomeBloc>();
+    homeBloc.add(HomeFetchProductEvent());
+
+    // Load Address
+    final addressBloc = context.read<AddressBloc>();
+    addressBloc.add(AddressFetchEvent());
   }
 
   @override
@@ -75,7 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   product: product,
                   navigateToDetail: () {
                     final route = MaterialPageRoute(
-                      builder: (context) => ProductDetailCard(product: product),
+                      builder: (context) =>
+                          ProductDetailScreen(product: product),
                     );
                     Navigator.push(context, route);
                   },

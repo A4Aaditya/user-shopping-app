@@ -71,7 +71,14 @@ class _OrderScreenState extends State<OrderScreen> {
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          'Payable: ${inrCurrency.format(order.payment.amount)}',
+                                          'Payable: ${inrCurrency.format(order.payment.amount / 100)}',
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Visibility(
+                                          visible: order.address != null,
+                                          child: Text(
+                                            '${order.address?.shortReadable()}',
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -91,6 +98,8 @@ class _OrderScreenState extends State<OrderScreen> {
                   );
                 },
               );
+            } else if (state is OrderLoadingState) {
+              return const CircularProgressIndicator();
             }
             return const Center(
               child: Text('No Order'),
@@ -103,7 +112,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   void navigateToProductDetail(ProductModel product) {
     final route = MaterialPageRoute(
-      builder: (context) => ProductDetailCard(product: product),
+      builder: (context) => ProductDetailScreen(product: product),
     );
     Navigator.push(context, route);
   }

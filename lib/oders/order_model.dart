@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
+import 'package:new_user_shop_app/profile/address/address_model.dart';
 
 class OrderModel {
   final String id;
@@ -8,6 +9,7 @@ class OrderModel {
   final String paymentType;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final AddressModel? address;
   final PaymentModel payment;
   final List<ProductModel> products;
   const OrderModel({
@@ -19,10 +21,12 @@ class OrderModel {
     required this.updatedAt,
     required this.payment,
     required this.products,
+    required this.address,
   });
   factory OrderModel.fromMap(Map<String, dynamic> map, {String? id}) {
     final createdBy = map['updated_at'] as Timestamp;
     final updatedAt = map['created_at'] as Timestamp;
+    final addressJson = map['address'];
     final mapProduct = map['items'] as List;
     final payment = PaymentModel.fromMap(map['payment']);
     final products = mapProduct.map((e) {
@@ -37,6 +41,9 @@ class OrderModel {
       createdAt: createdBy.toDate(),
       updatedAt: updatedAt.toDate(),
       products: products,
+      address: addressJson == null
+          ? null
+          : AddressModel.fromMap(addressJson, id: null),
     );
   }
 }

@@ -174,7 +174,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   void saveButtonPressed() async {
     await FirebaseFirestore.instance.collection('address').add(body);
-    print('Save pressed');
   }
 
   void editButtonPressed() async {
@@ -183,7 +182,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         .collection('address')
         .doc(docId)
         .update(body);
-    print('update pressed');
   }
 
   Map<String, dynamic> get body {

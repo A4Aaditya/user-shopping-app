@@ -33,6 +33,16 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              order.address?.fullReadable() ?? '',
+              style: const TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
             child: Text(
@@ -89,7 +99,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
   void navigateToProductDetailScreen(ProductModel product) {
     final route = MaterialPageRoute(
-        builder: (context) => ProductDetailCard(product: product));
+        builder: (context) => ProductDetailScreen(product: product));
     Navigator.push(context, route);
   }
 }

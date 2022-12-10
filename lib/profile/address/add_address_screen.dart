@@ -1,13 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:new_user_shop_app/profile/address/address_model.dart';
 
 class AddAddressScreen extends StatefulWidget {
-  const AddAddressScreen({super.key});
+  const AddAddressScreen({
+    super.key,
+    this.address,
+    this.isEditMode = false,
+    this.docId,
+  });
+  final AddressModel? address;
+  final bool isEditMode;
+  final String? docId;
 
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
 }
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
+  @override
+  void initState() {
+    super.initState();
+    numberController.text = widget.address?.phoneNumber ?? '';
+    fullNameController.text = widget.address?.name ?? '';
+    pinController.text = widget.address?.pincode ?? '';
+    houseController.text = widget.address?.house ?? '';
+    areaController.text = widget.address?.area ?? '';
+    landmarkController.text = widget.address?.landMark ?? '';
+    townController.text = widget.address?.town ?? '';
+    stateInitial = widget.address?.state ?? stateInitial;
+  }
+
   final fullNameController = TextEditingController();
   final numberController = TextEditingController();
   final pinController = TextEditingController();
@@ -15,8 +39,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   final areaController = TextEditingController();
   final landmarkController = TextEditingController();
   final townController = TextEditingController();
-  List state = ['Bihar', 'UP', 'Jharkhand', 'Maharastra', 'Madhya Pradesh'];
+  List state = [
+    'Bihar',
+    'UP',
+    'Jharkhand',
+    'Maharastra',
+    'Madhya Pradesh',
+  ];
   String? stateInitial;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +103,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           const SizedBox(height: 12),
           // area, street
           TextFormField(
-            controller: houseController,
+            controller: areaController,
             decoration: const InputDecoration(
               hintText: 'Area,Street,Setcor,Village',
               filled: true,
@@ -124,9 +155,56 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     });
                   }),
             ),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            onPressed:
+                widget.isEditMode ? editButtonPressed : saveButtonPressed,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: widget.isEditMode
+                  ? const Text('Edit Address')
+                  : const Text('Save Address'),
+            ),
           )
         ],
       ),
     );
+  }
+
+  void saveButtonPressed() async {
+    await FirebaseFirestore.instance.collection('address').add(body);
+    print('Save pressed');
+  }
+
+  void editButtonPressed() async {
+    final docId = widget.address?.id;
+    await FirebaseFirestore.instance
+        .collection('address')
+        .doc(docId)
+        .update(body);
+    print('update pressed');
+  }
+
+  Map<String, dynamic> get body {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final phone = numberController.text.trim();
+    final name = fullNameController.text.trim();
+    final pincode = pinController.text.trim();
+    final house = houseController.text.trim();
+    final area = areaController.text.trim();
+    final landMark = landmarkController.text.trim();
+    final town = townController.text.trim();
+    return {
+      'phone_number': phone,
+      'full_name': name,
+      'pin_code': pincode,
+      'house': house,
+      'area': area,
+      'land_mark': landMark,
+      'town': town,
+      'state': stateInitial,
+      'uid': uid,
+    };
   }
 }

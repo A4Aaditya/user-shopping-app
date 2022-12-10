@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_user_shop_app/oders/order_screen.dart';
-import 'package:new_user_shop_app/profile/address_screen.dart';
+import 'package:new_user_shop_app/profile/address/address_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

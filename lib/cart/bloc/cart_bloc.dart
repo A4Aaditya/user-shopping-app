@@ -14,15 +14,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   FutureOr<void> _addToCart(AddToCart event, Emitter<CartState> emit) {
     final products = state.products;
-    final updatedState = CartState(products: [...products, event.products]);
+    final updatedState = CartState(products: [...products, event.product]);
     emit(updatedState);
   }
 
   FutureOr<void> _removeFromCart(
-      RemoveFromCart event, Emitter<CartState> emit) {
+    RemoveFromCart event,
+    Emitter<CartState> emit,
+  ) {
     final product = state.products;
     final updatedProduct =
-        product.where((element) => element != element).toList();
+        product.where((element) => element != event.product).toList();
     final updatedState = CartState(products: updatedProduct);
     emit(updatedState);
   }

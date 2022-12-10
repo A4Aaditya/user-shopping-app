@@ -28,21 +28,71 @@ class _CartScreenState extends State<CartScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        return ProductCard(product: product);
-                      },
+                    child: Visibility(
+                      visible: products.isNotEmpty,
+                      replacement: Center(
+                        child: Text(
+                          'No Item in Cart',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                      ),
+                      child: ListView.builder(
+                        itemCount: products.length,
+                        itemBuilder: (context, index) {
+                          final product = products[index];
+                          final event = RemoveFromCart(
+                            product: product,
+                          );
+                          return Dismissible(
+                            key: ObjectKey(product.id),
+                            confirmDismiss: (direction) {
+                              if (direction == DismissDirection.endToStart) {
+                                return Future.value(true);
+                              }
+                              return Future.value(false);
+                            },
+                            secondaryBackground: Container(color: Colors.red),
+                            background: Container(color: Colors.blue),
+                            onDismissed: (direction) {
+                              if (direction == DismissDirection.endToStart) {
+                                context.read<CartBloc>().add(event);
+                              }
+                            },
+                            child: Stack(
+                              children: [
+                                ProductCard(product: product),
+                                Positioned(
+                                  right: 10,
+                                  bottom: 10,
+                                  child: ElevatedButton(
+                                    style: const ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStatePropertyAll<Color>(
+                                        Colors.red,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      context.read<CartBloc>().add(event);
+                                    },
+                                    child: const Text('Remove'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
+                  Visibility(
+                    visible: products.isNotEmpty,
                     child: ElevatedButton(
                       onPressed: () => reviewOrder(state.products),
                       child: const Padding(
                         padding: EdgeInsets.all(18.0),
-                        child: Text('Review Order'),
+                        child: Center(
+                          child: Text('Review Order'),
+                        ),
                       ),
                     ),
                   )
@@ -57,7 +107,8 @@ class _CartScreenState extends State<CartScreen> {
 
   void reviewOrder(List<ProductModel> products) {
     final route = MaterialPageRoute(
-        builder: (context) => ReviewOrderScreen(products: products));
+      builder: (context) => ReviewOrderScreen(products: products),
+    );
     Navigator.push(context, route);
   }
 }

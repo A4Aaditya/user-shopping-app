@@ -1,15 +1,21 @@
 part of 'cart_bloc.dart';
 
-abstract class CartEvent {}
+abstract class CartEvent {
+  const CartEvent();
+}
 
 class AddToCart extends CartEvent {
-  final ProductModel products;
+  final ProductModel product;
 
-  AddToCart({required this.products});
+  const AddToCart({
+    required this.product,
+  });
 }
 
 class RemoveFromCart extends CartEvent {
-  final ProductModel products;
+  final ProductModel product;
 
-  RemoveFromCart({required this.products});
+  const RemoveFromCart({
+    required this.product,
+  });
 }

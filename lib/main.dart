@@ -11,6 +11,7 @@ import 'package:new_user_shop_app/oders/bloc/order_bloc.dart';
 import 'package:new_user_shop_app/profile/address/bloc/add_address_bloc.dart';
 import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/profile/address/repository/address_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.light(),
+        locale: const Locale('hi', ''),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: isLoggedIn ? const Dashboard() : const LoginScreen(),
       ),
     );

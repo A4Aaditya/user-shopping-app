@@ -4,6 +4,7 @@ import 'package:new_user_shop_app/home/home_screen.dart';
 import 'package:new_user_shop_app/notification/notification_screen.dart';
 import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/profile/profile_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -30,6 +31,7 @@ class _DashboardState extends State<Dashboard> {
   int index = 0;
   @override
   Widget build(BuildContext context) {
+    final localized = AppLocalizations.of(context);
     return Scaffold(
       body: IndexedStack(
         index: index,
@@ -46,18 +48,18 @@ class _DashboardState extends State<Dashboard> {
         unselectedFontSize: 14.0,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: const Icon(Icons.home),
+            label: localized.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notification',
+            icon: const Icon(Icons.notifications),
+            label: localized.notification,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Profile',
+            icon: const Icon(Icons.dashboard),
+            label: localized.profile,
           ),
         ],
       ),

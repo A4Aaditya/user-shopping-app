@@ -8,6 +8,7 @@ import 'package:new_user_shop_app/cart/bloc/cart_bloc.dart';
 import 'package:new_user_shop_app/dashboard/dashboard_screen.dart';
 import 'package:new_user_shop_app/home/bloc/home_bloc.dart';
 import 'package:new_user_shop_app/oders/bloc/order_bloc.dart';
+import 'package:new_user_shop_app/profile/address/bloc/add_address_bloc.dart';
 import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/profile/address/repository/address_repository.dart';
 
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
           create: (context) => AddressBloc(repository: AddressRepository())
             ..add(isLoggedIn ? AddressFetchEvent() : InitialAddressEvent()),
         ),
+        BlocProvider(
+          create: (context) => AddAddressBloc(AddressRepository()),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

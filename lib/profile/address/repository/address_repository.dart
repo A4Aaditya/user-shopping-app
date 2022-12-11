@@ -12,7 +12,7 @@ class AddressRepository {
     try {
       final response = await _instance
           .collection(collectionPath)
-          .where('user_id', isEqualTo: userId)
+          .where(AddressModelKey.userId, isEqualTo: userId)
           .get();
 
       final docs = response.docs;
@@ -29,10 +29,22 @@ class AddressRepository {
     }
   }
 
-  // refresh address
+  Future<bool> addAddress(Map<String, dynamic> body) async {
+    try {
+      await _instance.collection(collectionPath).add(body);
+      return true;
+    } on FirebaseException catch (e) {
+      throw e.message.toString();
+    } catch (e) {
+      rethrow;
+    }
+  }
 
-  Future<void> refreshAddress() async {
-    try {} on FirebaseException catch (e) {
+  Future<bool> updateAddress(String docId, Map<String, dynamic> body) async {
+    try {
+      await _instance.collection(collectionPath).doc(docId).update(body);
+      return true;
+    } on FirebaseException catch (e) {
       throw e.message.toString();
     } catch (e) {
       rethrow;

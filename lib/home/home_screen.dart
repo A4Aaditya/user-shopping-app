@@ -26,10 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Load Homepage
     final homeBloc = context.read<HomeBloc>();
     homeBloc.add(HomeFetchProductEvent());
-
-    // Load Address
-    final addressBloc = context.read<AddressBloc>();
-    addressBloc.add(AddressFetchEvent());
   }
 
   @override

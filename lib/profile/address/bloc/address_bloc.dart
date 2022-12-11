@@ -51,7 +51,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     } else {
       emit(const AddressLoadingState());
     }
-
     // API Call
     try {
       final response = await repository.fetchAddress();

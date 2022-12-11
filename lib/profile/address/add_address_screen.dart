@@ -1,7 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/profile/address/address_model.dart';
+import 'package:new_user_shop_app/profile/address/address_screen.dart';
+import 'package:new_user_shop_app/profile/address/bloc/add_address_bloc.dart';
+import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 
 class AddAddressScreen extends StatefulWidget {
   const AddAddressScreen({
@@ -30,6 +33,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     landmarkController.text = widget.address?.landMark ?? '';
     townController.text = widget.address?.town ?? '';
     stateInitial = widget.address?.state ?? stateInitial;
+    setState(() {
+      editMode = widget.isEditMode;
+      print(editMode);
+    });
   }
 
   final fullNameController = TextEditingController();
@@ -47,6 +54,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     'Madhya Pradesh',
   ];
   String? stateInitial;
+  bool editMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -157,31 +165,45 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
           ),
           const SizedBox(height: 12),
-          ElevatedButton(
-            onPressed:
-                widget.isEditMode ? editButtonPressed : saveButtonPressed,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: widget.isEditMode
-                  ? const Text('Edit Address')
-                  : const Text('Save Address'),
-            ),
-          )
+          BlocConsumer<AddAddressBloc, AddAddressState>(
+              listener: (context, state) {
+            if (state is AddAddressSuccessState) {
+              showSnackBar('Address updated successfully', Colors.green);
+              navigateToAddressScreen();
+              refreshAddressScreen();
+            } else if (state is AddAddressErrorState) {
+              return showSnackBar(state.errorMessage, Colors.red);
+            }
+          }, builder: (context, state) {
+            if (state is AddAddressLoadingState) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return ElevatedButton(
+              onPressed: editMode ? saveButtonPressed : editButtonPressed,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: editMode
+                    ? const Text('Save Address')
+                    : const Text('Edit Address'),
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 
   void saveButtonPressed() async {
-    await FirebaseFirestore.instance.collection('address').add(body);
+    final bloc = context.read<AddAddressBloc>();
+    final event = NewAddAddressEvent(body: body);
+    bloc.add(event);
   }
 
   void editButtonPressed() async {
-    final docId = widget.address?.id;
-    await FirebaseFirestore.instance
-        .collection('address')
-        .doc(docId)
-        .update(body);
+    final docId = widget.address?.id ?? '';
+    final bloc = context.read<AddAddressBloc>();
+    final event = UpdateAddressEvent(body: body, docId: docId);
+    bloc.add(event);
   }
 
   Map<String, dynamic> get body {
@@ -204,5 +226,26 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       'state': stateInitial,
       'uid': uid,
     };
+  }
+
+  void refreshAddressScreen() {
+    final bloc = context.read<AddressBloc>();
+    final event = AddressRefreshEvent();
+    bloc.add(event);
+  }
+
+  void navigateToAddressScreen() {
+    final route = MaterialPageRoute(
+      builder: (context) => const AddressScreen(),
+    );
+    Navigator.pop(context);
+  }
+
+  void showSnackBar(String message, Color color) {
+    final snackBar = SnackBar(
+      content: Text(message),
+      backgroundColor: color,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

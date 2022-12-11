@@ -51,16 +51,16 @@ class AddressModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'phone_number': phoneNumber,
-      'area': area,
+      AddressModelKey.id: id,
+      AddressModelKey.phoneNumber: phoneNumber,
+      AddressModelKey.area: area,
       AddressModelKey.pincode: pincode,
-      'house': house,
-      'town': town,
-      'land_mark': landMark,
+      AddressModelKey.house: house,
+      AddressModelKey.town: town,
+      AddressModelKey.landMark: landMark,
       AddressModelKey.name: name,
-      'user_id': userId,
-      'state': state,
+      AddressModelKey.userId: userId,
+      AddressModelKey.state: state,
     };
   }
 }

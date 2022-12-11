@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/home/home_screen.dart';
 import 'package:new_user_shop_app/notification/notification_screen.dart';
+import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/profile/profile_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -11,6 +13,15 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Load Address
+    final addressBloc = context.read<AddressBloc>();
+    addressBloc.add(AddressFetchEvent());
+  }
+
   final List<Widget> screens = [
     const HomeScreen(),
     const NotificationScreen(),

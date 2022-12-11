@@ -6,10 +6,15 @@ class OrderRepository {
   final _instance = FirebaseFirestore.instance;
   static const collectionPath = 'orders';
 
-  Future<bool> addOrder(Map<String, dynamic> body) async {
+  Future<OrderModel?> addOrder(Map<String, dynamic> body) async {
     try {
-      await _instance.collection(collectionPath).add(body);
-      return true;
+      final ref = await _instance.collection(collectionPath).add(body);
+      final doc = await ref.get();
+      final data = doc.data();
+      if (data == null) {
+        return null;
+      }
+      return OrderModel.fromMap(data);
     } on FirebaseException catch (e) {
       throw e.message.toString();
     } catch (e) {

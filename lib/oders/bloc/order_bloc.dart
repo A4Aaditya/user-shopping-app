@@ -22,8 +22,10 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     try {
       emit(OrderLoadingState());
       final response = await OrderRepository().addOrder(event.body);
-      if (response == true) {
-        emit(OrdeSuccessState());
+      if (response != null) {
+        emit(OrdeSuccessState(response));
+      } else {
+        emit(OrderErrorState(message: "Something went wrong"));
       }
     } catch (e) {
       emit(OrderErrorState(message: e.toString()));

@@ -8,7 +8,10 @@ class OrderLoadingState extends OrderState {}
 
 class PaymentProcessingState extends OrderState {}
 
-class OrdeSuccessState extends OrderState {}
+class OrdeSuccessState extends OrderState {
+  final OrderModel order;
+  OrdeSuccessState(this.order);
+}
 
 class OrderErrorState extends OrderState {
   final String message;

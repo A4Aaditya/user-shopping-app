@@ -7,7 +7,6 @@ import 'package:new_user_shop_app/cart/bloc/cart_bloc.dart';
 import 'package:new_user_shop_app/home/bloc/home_bloc.dart';
 import 'package:new_user_shop_app/cart/cart_screen.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
-import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
 import 'package:new_user_shop_app/widget/product_card.dart';
 import 'package:new_user_shop_app/widget/product_detail_card.dart';
 

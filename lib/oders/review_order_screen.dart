@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/dashboard/dashboard_screen.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
+import 'package:new_user_shop_app/notification/bloc/notification_bloc.dart';
 import 'package:new_user_shop_app/oders/bloc/order_bloc.dart';
 import 'package:new_user_shop_app/profile/address/address_model.dart';
 import 'package:new_user_shop_app/profile/address/bloc/address_bloc.dart';
@@ -91,6 +92,8 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
                     );
                   } else if (state is OrdeSuccessState) {
                     context.read<OrderBloc>().add(OrderFetchEvent());
+                    final event = SendBookingNotification(state.order);
+                    context.read<NotificationBloc>().add(event);
                     showOrderSuccess(context);
                   }
                 },

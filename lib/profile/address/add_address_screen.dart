@@ -22,23 +22,6 @@ class AddAddressScreen extends StatefulWidget {
 }
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
-  @override
-  void initState() {
-    super.initState();
-    numberController.text = widget.address?.phoneNumber ?? '';
-    fullNameController.text = widget.address?.name ?? '';
-    pinController.text = widget.address?.pincode ?? '';
-    houseController.text = widget.address?.house ?? '';
-    areaController.text = widget.address?.area ?? '';
-    landmarkController.text = widget.address?.landMark ?? '';
-    townController.text = widget.address?.town ?? '';
-    stateInitial = widget.address?.state ?? stateInitial;
-    setState(() {
-      editMode = widget.isEditMode;
-      print(editMode);
-    });
-  }
-
   final fullNameController = TextEditingController();
   final numberController = TextEditingController();
   final pinController = TextEditingController();
@@ -46,21 +29,37 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   final areaController = TextEditingController();
   final landmarkController = TextEditingController();
   final townController = TextEditingController();
-  List state = [
-    'Bihar',
-    'UP',
-    'Jharkhand',
-    'Maharastra',
-    'Madhya Pradesh',
-  ];
+  List state = ['Bihar', 'UP', 'Jharkhand', 'Maharastra', 'Madhya Pradesh'];
   String? stateInitial;
   bool editMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final address = widget.address;
+    if (address != null) {
+      numberController.text = address.phoneNumber;
+      fullNameController.text = address.name;
+      pinController.text = address.pincode;
+      houseController.text = address.house;
+      areaController.text = address.area;
+      landmarkController.text = address.landMark;
+      townController.text = address.town;
+      stateInitial = address.state;
+      editMode = true;
+    } else {
+      editMode = false;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Address'),
+        title: Text(
+          editMode ? 'Edit Address' : 'Add Address',
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(12),
@@ -179,12 +178,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               return const Center(child: CircularProgressIndicator());
             }
             return ElevatedButton(
-              onPressed: editMode ? saveButtonPressed : editButtonPressed,
+              onPressed: editMode ? editButtonPressed : saveButtonPressed,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: editMode
-                    ? const Text('Save Address')
-                    : const Text('Edit Address'),
+                    ? const Text('Edit Address')
+                    : const Text('Save Address'),
               ),
             );
           }),
@@ -224,7 +223,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       'land_mark': landMark,
       'town': town,
       'state': stateInitial,
-      'uid': uid,
+      'user_id': uid,
     };
   }
 
@@ -238,7 +237,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     final route = MaterialPageRoute(
       builder: (context) => const AddressScreen(),
     );
-    Navigator.pop(context);
+    Navigator.push(context, route);
   }
 
   void showSnackBar(String message, Color color) {

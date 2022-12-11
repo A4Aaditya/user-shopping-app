@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:new_user_shop_app/profile/address/address_model.dart';
 
 class AddressRepository {
-  final _instance = FirebaseFirestore.instance;
+  final _fb = FirebaseFirestore.instance;
   static const collectionPath = 'address';
   final userId = FirebaseAuth.instance.currentUser?.uid;
 
 // fetch address
   Future<List<AddressModel>> fetchAddress() async {
     try {
-      final response = await _instance
+      final response = await _fb
           .collection(collectionPath)
           .where(AddressModelKey.userId, isEqualTo: userId)
           .get();
@@ -31,7 +31,7 @@ class AddressRepository {
 
   Future<bool> addAddress(Map<String, dynamic> body) async {
     try {
-      await _instance.collection(collectionPath).add(body);
+      await _fb.collection(collectionPath).add(body);
       return true;
     } on FirebaseException catch (e) {
       throw e.message.toString();
@@ -42,7 +42,7 @@ class AddressRepository {
 
   Future<bool> updateAddress(String docId, Map<String, dynamic> body) async {
     try {
-      await _instance.collection(collectionPath).doc(docId).update(body);
+      await _fb.collection(collectionPath).doc(docId).update(body);
       return true;
     } on FirebaseException catch (e) {
       throw e.message.toString();

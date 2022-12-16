@@ -6,3 +6,8 @@ class SendBookingNotification extends NotificationEvent {
   final OrderModel order;
   SendBookingNotification(this.order);
 }
+
+class SenCancelNotification extends NotificationEvent {
+  final OrderModel order;
+  SenCancelNotification(this.order);
+}

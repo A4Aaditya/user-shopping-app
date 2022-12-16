@@ -46,6 +46,20 @@ class OrderModel {
           : AddressModel.fromMap(addressJson, id: null),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'created_by': createdBy,
+      'order_status': orderStatus,
+      'payment_type': paymentType,
+      'created_at': createdAt.millisecondsSinceEpoch,
+      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'address': address?.toMap(),
+      'payment': payment.toMap(),
+      'products': products.map((x) => x.toMap()).toList(),
+    };
+  }
 }
 
 class PaymentModel {
@@ -67,5 +81,13 @@ class PaymentModel {
       paymentId: map['paymentId'],
       signature: map['signature'],
     );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'amount': amount,
+      'paymentId': paymentId,
+      'orderId': orderId,
+      'signature': signature,
+    };
   }
 }

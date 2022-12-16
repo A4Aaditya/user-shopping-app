@@ -12,6 +12,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     required this.repo,
   }) : super(NotificationInitial()) {
     on<SendBookingNotification>(_sendBookingNotification);
+    on<SenCancelNotification>(_sendCanelNotification);
   }
 
   final NotificationRepo repo;
@@ -20,6 +21,25 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     SendBookingNotification event,
     Emitter<NotificationState> emit,
   ) {
-    repo.sendNotification(event.order);
+    final payload = {
+      'type': 'NEW_BOOKING',
+      'title': 'Booking Notification',
+      'description': 'Booking Description',
+      'meta': event.order.toMap(),
+    };
+    repo.sendNotification(payload);
+  }
+
+  FutureOr<void> _sendCanelNotification(
+    SenCancelNotification event,
+    Emitter<NotificationState> emit,
+  ) {
+    final payload = {
+      'type': 'CANCEL_BOOKING',
+      'title': 'Booking Notification',
+      'description': 'Booking Description',
+      'meta': event.order.toMap(),
+    };
+    repo.sendNotification(payload);
   }
 }

@@ -14,7 +14,7 @@ class OrderRepository {
       if (data == null) {
         return null;
       }
-      return OrderModel.fromMap(data);
+      return OrderModel.fromMap(data, id: doc.id);
     } on FirebaseException catch (e) {
       throw e.message.toString();
     } catch (e) {

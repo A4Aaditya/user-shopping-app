@@ -33,6 +33,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
     final bloc = context.read<OrderBloc>();
     bloc.add(InitiatePayment());
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, placeOrder);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, paymentError);
   }
 
   @override
@@ -197,6 +198,13 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
       }
     };
     _razorpay.open(options);
+  }
+
+  void paymentError(PaymentFailureResponse response) {
+    showSnackBar(
+      color: Colors.red,
+      message: response.message ?? 'Payment Failed',
+    );
   }
 
   void placeOrder(PaymentSuccessResponse response) async {

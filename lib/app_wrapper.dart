@@ -14,7 +14,7 @@ class AppWrapper extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(),
-      locale: const Locale('hi', ''),
+      locale: const Locale('en', ''),
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       home: isLoggedIn ? const Dashboard() : const LoginScreen(),

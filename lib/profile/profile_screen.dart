@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:new_user_shop_app/authentication/bloc/auth_bloc.dart';
+import 'package:new_user_shop_app/authentication/views/login_screen.dart';
 import 'package:new_user_shop_app/oders/order_screen.dart';
 import 'package:new_user_shop_app/profile/address/address_screen.dart';
 
@@ -48,12 +51,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: const Icon(Icons.logout),
               title: const Text('Logout'),
               subtitle: const Text('Logout me from the app'),
-              onTap: () {},
+              onTap: logoutPressed,
             ),
           ),
         ],
       ),
     );
+  }
+
+  void logoutPressed() {
+    final bloc = context.read<AuthBloc>();
+    final event = AuthSignoutEvent();
+    bloc.add(event);
+    final route = MaterialPageRoute(
+      builder: (context) => const LoginScreen(),
+    );
+    Navigator.pushAndRemoveUntil(context, route, (route) => false);
   }
 
   void navigateToAddressScreeen() {

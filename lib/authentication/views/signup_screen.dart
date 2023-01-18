@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/authentication/bloc/auth_bloc.dart';
@@ -51,6 +52,8 @@ class _SignupScreenState extends State<SignupScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _emailNameController,
+              validator: (value) => validateEmail(),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 filled: true,
@@ -61,6 +64,8 @@ class _SignupScreenState extends State<SignupScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _passwordNameController,
+              validator: (value) => validatePassword(),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: const InputDecoration(
                 filled: true,
                 hintText: 'Password',
@@ -94,9 +99,11 @@ class _SignupScreenState extends State<SignupScreen> {
   void signupPressed() async {
     final email = _emailNameController.text.trim();
     final password = _passwordNameController.text.trim();
-    final bloc = context.read<AuthBloc>();
-    final event = AuthSignupEvent(email: email, password: password);
-    bloc.add(event);
+    if (_globalKey.currentState?.validate() == true) {
+      final bloc = context.read<AuthBloc>();
+      final event = AuthSignupEvent(email: email, password: password);
+      bloc.add(event);
+    }
   }
 
   void navigateToDashboard() {
@@ -110,5 +117,25 @@ class _SignupScreenState extends State<SignupScreen> {
       backgroundColor: color,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  String? validateEmail() {
+    final email = _emailNameController.text.trim();
+    if (email.isEmpty) {
+      return 'Please enter email';
+    } else if (EmailValidator.validate(email) == false) {
+      return 'Please enter correct email';
+    }
+    return null;
+  }
+
+  String? validatePassword() {
+    final password = _passwordNameController.text.trim();
+    if (password.isEmpty) {
+      return 'Please enter password';
+    } else if (password.length < 6) {
+      return 'Password should be atleast 6 character';
+    }
+    return null;
   }
 }

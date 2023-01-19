@@ -6,7 +6,6 @@ import 'package:new_user_shop_app/constants/routes.dart';
 import 'package:new_user_shop_app/dashboard/dashboard_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:new_user_shop_app/oders/order_screen.dart';
-import 'package:new_user_shop_app/profile/address/add_address_screen.dart';
 import 'package:new_user_shop_app/profile/address/address_screen.dart';
 
 class AppWrapper extends StatelessWidget {

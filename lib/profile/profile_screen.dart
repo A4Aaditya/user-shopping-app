@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/authentication/bloc/auth_bloc.dart';
-import 'package:new_user_shop_app/authentication/views/login_screen.dart';
+import 'package:new_user_shop_app/constants/routes.dart';
 import 'package:new_user_shop_app/oders/order_screen.dart';
-import 'package:new_user_shop_app/profile/address/address_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -28,12 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: const Icon(Icons.shopping_bag),
               title: const Text('Order'),
               subtitle: const Text('View your recent and past orders'),
-              onTap: () {
-                final route = MaterialPageRoute(
-                  builder: (context) => const OrderScreen(),
-                );
-                Navigator.push(context, route);
-              },
+              onTap: navigateToOrderScreen,
             ),
           ),
           Card(
@@ -63,15 +57,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final bloc = context.read<AuthBloc>();
     final event = AuthSignoutEvent();
     bloc.add(event);
-    final route = MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      routeLoginScreen,
+      (route) => false,
     );
-    Navigator.pushAndRemoveUntil(context, route, (route) => false);
+  }
+
+  void navigateToOrderScreen() {
+    Navigator.pushNamed(context, routeOrderScreen);
   }
 
   void navigateToAddressScreeen() {
-    final route =
-        MaterialPageRoute(builder: (context) => const AddressScreen());
-    Navigator.push(context, route);
+    Navigator.pushNamed(context, routeAddressScreen);
   }
 }

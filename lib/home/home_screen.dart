@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/authentication/bloc/auth_bloc.dart';
 import 'package:new_user_shop_app/authentication/views/login_screen.dart';
 import 'package:new_user_shop_app/cart/bloc/cart_bloc.dart';
+import 'package:new_user_shop_app/constants/routes.dart';
 import 'package:new_user_shop_app/home/bloc/home_bloc.dart';
 import 'package:new_user_shop_app/cart/cart_screen.dart';
 import 'package:new_user_shop_app/home/models/product_model.dart';
@@ -108,10 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
     final bloc = context.read<AuthBloc>();
     final event = AuthSignoutEvent();
     bloc.add(event);
-    final route = MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
+
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      routeLoginScreen,
+      (route) => false,
     );
-    Navigator.pushAndRemoveUntil(context, route, (route) => false);
   }
 
   void showSnackBar({required String message, required Color color}) {
@@ -123,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void navigateToCartScreen() {
-    final route = MaterialPageRoute(builder: (context) => const CartScreen());
-    Navigator.push(context, route);
+    Navigator.pushNamed(context, routeCartScreen);
   }
 
   void tryAgainPressed() {

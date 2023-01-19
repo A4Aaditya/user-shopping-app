@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:new_user_shop_app/authentication/bloc/auth_bloc.dart';
 import 'package:new_user_shop_app/authentication/views/signup_screen.dart';
+import 'package:new_user_shop_app/constants/routes.dart';
 import 'package:new_user_shop_app/dashboard/dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -107,15 +108,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void signupPressed() {
-    final route = MaterialPageRoute(
-      builder: (context) => const SignupScreen(),
-    );
-    Navigator.push(context, route);
+    Navigator.pushNamed(context, routeSignupScreen);
   }
 
   void navigateToDashboard() {
-    final route = MaterialPageRoute(builder: (context) => const Dashboard());
-    Navigator.pushAndRemoveUntil(context, route, (route) => false);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      routeDashBoardScreen,
+      (route) => false,
+    );
   }
 
   void showSnackBar({required Color color, required String message}) {

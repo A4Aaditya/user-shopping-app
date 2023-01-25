@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     Navigator.pushNamedAndRemoveUntil(
       context,
-      routeLoginScreen,
+      AppRoute.routeLoginScreen,
       (route) => false,
     );
   }
@@ -124,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void navigateToCartScreen() {
-    Navigator.pushNamed(context, routeCartScreen);
+    Navigator.pushNamed(context, AppRoute.routeCartScreen);
   }
 
   void tryAgainPressed() {

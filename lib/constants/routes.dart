@@ -1,6 +1,8 @@
-const routeLoginScreen = '/loginScreen/';
-const routeSignupScreen = '/signupScreen';
-const routeDashBoardScreen = '/dashboardScreen';
-const routeOrderScreen = '/orderScreen';
-const routeCartScreen = '/cartScreen';
-const routeAddressScreen = '/addressScreen';
+class AppRoute {
+  static const routeLoginScreen = '/loginScreen/';
+  static const routeSignupScreen = '/signupScreen';
+  static const routeDashBoardScreen = '/dashboardScreen';
+  static const routeOrderScreen = '/orderScreen';
+  static const routeCartScreen = '/cartScreen';
+  static const routeAddressScreen = '/addressScreen';
+}

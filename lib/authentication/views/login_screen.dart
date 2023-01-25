@@ -106,13 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void signupPressed() {
-    Navigator.pushNamed(context, routeSignupScreen);
+    Navigator.pushNamed(context, AppRoute.routeSignupScreen);
   }
 
   void navigateToDashboard() {
     Navigator.pushNamedAndRemoveUntil(
       context,
-      routeDashBoardScreen,
+      AppRoute.routeDashBoardScreen,
       (route) => false,
     );
   }

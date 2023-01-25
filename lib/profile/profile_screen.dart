@@ -59,16 +59,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     Navigator.pushNamedAndRemoveUntil(
       context,
-      routeLoginScreen,
+      AppRoute.routeLoginScreen,
       (route) => false,
     );
   }
 
   void navigateToOrderScreen() {
-    Navigator.pushNamed(context, routeOrderScreen);
+    Navigator.pushNamed(context, AppRoute.routeOrderScreen);
   }
 
   void navigateToAddressScreeen() {
-    Navigator.pushNamed(context, routeAddressScreen);
+    Navigator.pushNamed(context, AppRoute.routeAddressScreen);
   }
 }
